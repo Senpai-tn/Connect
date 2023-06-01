@@ -13,8 +13,26 @@ router.post('/login', (req, res) => {
     axios
       .post('http://localhost:5000/api/auth/login', { email, password })
       .then(async (response) => {
-        const user = await User.findOne({ uid: response.data.user.uid })
-        res.send({ ...user._doc, password: undefined })
+        if (response.data.customData) {
+          if (
+            response.data.customData.message !==
+            'FirebaseError: Firebase: Error (auth/wrong-password).'
+          ) {
+            if (
+              response.data.customData.message ===
+              'FirebaseError: Firebase: Error (auth/user-not-found).'
+            ) {
+              res.status(404).send('not found')
+            }
+          } else res.status(403).send('password error')
+        } else {
+          const user = await User.findOne({ uid: response.data.user.uid })
+          if (!user.deletedAt) {
+            if (!user.blockedAt) {
+              res.send({ ...user._doc, password: undefined })
+            } else res.status(401).send('user blocked')
+          } else res.status(402).send('user deleted')
+        }
       })
       .catch((error) => {
         res.send({ ...error })
