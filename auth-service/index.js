@@ -12,14 +12,18 @@ app.get('/', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-  const { email, password } = req.body
-  signInWithEmailAndPassword(auth, email, password)
-    .then(async (value) => {
-      res.status(200).send(value)
-    })
-    .catch((error) => {
-      res.send({ ...error })
-    })
+  try {
+    const { email, password } = req.body
+    signInWithEmailAndPassword(auth, email, password)
+      .then(async (value) => {
+        res.status(200).send(value)
+      })
+      .catch((error) => {
+        res.status(500).send({ ...error })
+      })
+  } catch (error) {
+    res.status(500).send(error)
+  }
 })
 
 app.post('/register', (req, res) => {
@@ -30,7 +34,7 @@ app.post('/register', (req, res) => {
         res.send(response.user)
       })
       .catch((error) => {
-        res.send({ ...error })
+        res.status(500).send({ ...error })
       })
   } catch (error) {
     res.status(500).send(error)
