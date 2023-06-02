@@ -19,10 +19,10 @@ app.post('/login', (req, res) => {
         res.status(200).send(value)
       })
       .catch((error) => {
-        res.status(500).send({ ...error })
+        res.send(error)
       })
   } catch (error) {
-    res.status(500).send(error)
+    res.status(500).send({ ...error })
   }
 })
 
@@ -34,10 +34,10 @@ app.post('/register', (req, res) => {
         res.send(response.user)
       })
       .catch((error) => {
-        res.status(500).send({ ...error })
+        res.send({ ...error })
       })
   } catch (error) {
-    res.status(500).send(error)
+    res.status(500).send({ error: 'error' })
   }
 })
 app.listen(5001, () => {
