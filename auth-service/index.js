@@ -5,6 +5,8 @@ const {
 } = require('firebase/auth')
 const { auth } = require('../firebase')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 
 app.use(express.json())
 app.get('/', (req, res) => {
