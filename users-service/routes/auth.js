@@ -11,7 +11,7 @@ router.post('/login', (req, res) => {
   try {
     const { email, password } = req.body
     axios
-      .post('http://localhost:5000/api/auth/login', { email, password })
+      .post('http://165.51.222.52:5000/api/auth/login', { email, password })
       .then(async (response) => {
         if (response.data.customData) {
           if (
@@ -61,32 +61,41 @@ router.post('/register', (req, res) => {
       civilité,
     } = req.body
     axios
-      .post('http://localhost:5000/api/auth/register', { email, password })
+      .post('http://165.51.222.52:5000/api/auth/register', { email, password })
       .then(async (response) => {
-        const user = new User({
-          uid: response.data.uid,
-          email,
-          password,
-          tel,
-          adresse,
-          role,
-          photo,
-          dateNaissance,
-          cp,
-          ville,
-          civilité,
-        })
-        user
-          .save()
-          .then((response) => {
-            res.send(response)
+        if (response.data.customData) {
+          if (
+            response.data.customData.message ===
+            'FirebaseError: Firebase: Error (auth/email-already-in-use).'
+          ) {
+            res.status(402).send('email already used')
+          }
+        } else {
+          const user = new User({
+            uid: response.data.uid,
+            email,
+            password,
+            tel,
+            adresse,
+            role,
+            photo,
+            dateNaissance,
+            cp,
+            ville,
+            civilité,
           })
-          .catch((error) => {
-            res.send({ ...error })
-          })
+          user
+            .save()
+            .then((response) => {
+              res.send(response)
+            })
+            .catch((error) => {
+              res.send({ ...error })
+            })
+        }
       })
       .catch((error) => {
-        res.send({ ...error })
+        res.send({ n: 'dsggfdgfds' })
       })
   } catch (error) {
     res.status(500).send({ ...error })
