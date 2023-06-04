@@ -107,6 +107,9 @@
           "200": {
             "description": "OK"
           },
+          "402": {
+            "description": "Payment Required"
+          },
           "500": {
             "description": "Internal Server Error"
           }

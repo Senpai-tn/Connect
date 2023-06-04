@@ -11,7 +11,7 @@ router.post('/login', (req, res) => {
   try {
     const { email, password } = req.body
     axios
-      .post('http://165.51.222.52:5000/api/auth/login', { email, password })
+      .post('http://localhost:5000/api/auth/login', { email, password })
       .then(async (response) => {
         if (response.data.customData) {
           if (
@@ -61,7 +61,7 @@ router.post('/register', (req, res) => {
       civilité,
     } = req.body
     axios
-      .post('http://165.51.222.52:5000/api/auth/register', { email, password })
+      .post('http://localhost:5000/api/auth/register', { email, password })
       .then(async (response) => {
         if (response.data.customData) {
           if (
@@ -90,7 +90,7 @@ router.post('/register', (req, res) => {
               res.send(response)
             })
             .catch((error) => {
-              res.send({ ...error })
+              res.send({ message: error.message })
             })
         }
       })
