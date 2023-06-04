@@ -95,7 +95,7 @@ router.post('/register', (req, res) => {
         }
       })
       .catch((error) => {
-        res.send({ n: 'dsggfdgfds' })
+        res.send({ ...error })
       })
   } catch (error) {
     res.status(500).send({ ...error })
