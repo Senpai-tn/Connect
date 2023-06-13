@@ -1,5 +1,4 @@
-const { Schema, model } = require('mongoose')
-
+const { model, Schema } = require('mongoose')
 const userSchema = new Schema({
   uid: { type: String, unique: true, default: null },
   email: { type: String, unique: true, default: null },
@@ -15,8 +14,9 @@ const userSchema = new Schema({
   cp: { type: String, default: null },
   ville: { type: String, default: null },
   civilité: { type: String, default: null },
+  listEntreprise: [{ type: Schema.Types.ObjectId }],
+  default: [],
 })
+const User = model('users', userSchema)
 
-const User = model('user', userSchema)
-User.createIndexes()
 module.exports = User

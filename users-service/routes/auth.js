@@ -1,6 +1,6 @@
-const { default: axios } = require('axios')
+const axios = require('axios')
 const express = require('express')
-const User = require('../Models/User')
+const User = require('../localModels/user')
 
 const router = express.Router()
 
@@ -107,11 +107,10 @@ router.get('/search', async (req, res) => {
    * #swagger.tags = ['Search']
    */
   try {
-    const { filter } = req.query
-    const users = await User.find(filter)
+    const users = await User.find()
     res.send(users)
   } catch (error) {
-    res.status(500).send({ ...error })
+    res.status(500).send({ ...error, message: error.message })
   }
 })
 
