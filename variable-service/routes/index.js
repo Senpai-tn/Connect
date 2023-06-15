@@ -15,8 +15,8 @@ router.post('/', async (req, res) => {
    * #swagger.tags = ['Add']
    */
   try {
-    const { name, type } = req.body
-    const variable = new Variable({ name, type })
+    const { name, type, value } = req.body
+    const variable = new Variable({ name, type, value })
     variable
       .save()
       .then((saved) => {

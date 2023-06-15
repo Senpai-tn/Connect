@@ -1,6 +1,7 @@
 const axios = require('axios')
 const express = require('express')
-const User = require('../localModels/user')
+
+const User = require('../models/user')
 
 const router = express.Router()
 
@@ -112,6 +113,14 @@ router.get('/search', async (req, res) => {
   } catch (error) {
     res.status(500).send({ ...error, message: error.message })
   }
+})
+
+router.get('/:id', async (req, res) => {
+  /*
+   * #swagger.tags = ['Find by id']
+   */
+  const user = await User.findById(req.params.id)
+  res.send(user)
 })
 
 module.exports = router

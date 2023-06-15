@@ -23,11 +23,39 @@
       },
       "post": {
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "gerant": {
+                  "example": "any"
+                },
+                "comptable": {
+                  "example": "any"
+                },
+                "siret": {
+                  "example": "any"
+                },
+                "tel": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "adress": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "500": {
             "description": "Internal Server Error"
           }

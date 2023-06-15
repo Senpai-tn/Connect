@@ -41,6 +41,9 @@
                 },
                 "type": {
                   "example": "any"
+                },
+                "value": {
+                  "example": "any"
                 }
               }
             }
