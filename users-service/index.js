@@ -16,7 +16,9 @@ const cors = require('cors')
 app.use(express.json())
 app.use(cors())
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
-
+app.get('/a', (req, res) => {
+  res.send({ a: req.query.filter })
+})
 app.use('/', authRouter)
 app.use('/entreprise', entrepriseRouter)
 app.listen(5002, () => {

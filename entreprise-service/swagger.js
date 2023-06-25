@@ -14,6 +14,7 @@ const doc = () => {
     consumes: ['application/json'],
     produces: ['application/json'],
     tags: [],
+
     securityDefinitions: {
       apiKeyAuth: {
         type: 'apiKey',
