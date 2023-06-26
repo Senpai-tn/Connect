@@ -45,9 +45,7 @@ const io = new Server(server, {
 })
 
 app.get('/', (req, res) => {
-  const { event, name } = req.query
-  io.emit('getSocketId', { name: name })
-  res.send('dfgfdsughdfsg')
+  res.send('main route')
 })
 // io.on('connection', (client) => {
 //   client.emit('getSocketId', { socketId: client.id })
