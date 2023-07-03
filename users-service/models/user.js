@@ -6,7 +6,10 @@ const userSchema = new Schema({
   email: { type: String, unique: true, default: null },
   password: { type: String, default: null },
   tel: { type: String, default: null },
-  role: { type: String, enum: ['Gerant', 'Comptable', 'Admin', 'Super_Admin'] },
+  role: {
+    type: String,
+    enum: ['Gerant', 'Comptable', 'Admin', 'Super_Admin', 'Salarie'],
+  },
   photo: { type: String, default: null },
   createdAt: { type: Date, default: Date.now },
   deletedAt: { type: Date, default: null },

@@ -173,4 +173,15 @@ router.post('/search', async (req, res) => {
     res.status(500).send({ ...error, message: error.message })
   }
 })
+
+router.patch('/restore', async (req, res) => {
+  const { idList } = req.body
+  const users = await User.find(idList && { _id: idList })
+  users.map(async (u) => {
+    u.deletedAt = null
+    result = await u.save()
+    return result
+  })
+  res.send(users)
+})
 module.exports = router
