@@ -47,9 +47,7 @@ const io = new Server(server, {
 app.get('/', (req, res) => {
   res.send('main route')
 })
-// io.on('connection', (client) => {
-//   client.emit('getSocketId', { socketId: client.id })
-// })
+
 server.listen(5000, () => {
   console.log('Secure server is listening on port 5000')
 })

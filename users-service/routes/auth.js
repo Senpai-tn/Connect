@@ -174,7 +174,7 @@ router.post('/search', async (req, res) => {
   }
 })
 
-router.patch('/restore', async (req, res) => {
+router.post('/restore', async (req, res) => {
   const { idList } = req.body
   const users = await User.find(idList && { _id: idList })
   users.map(async (u) => {
