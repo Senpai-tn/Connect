@@ -31,7 +31,7 @@ const proxy = function (host) {
 }
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/api/auth', proxy('http://localhost:5001'))
-app.use('/api/users', proxy('http://localhost:5002'))
+app.use('/api/users', proxy('https://dev.ccconnect.fr:5002'))
 app.use('/api/entreprises', proxy('http://localhost:5003'))
 app.use('/api/variables', proxy('http://localhost:5004'))
 
@@ -45,7 +45,7 @@ const io = new Server(server, {
 })
 
 app.get('/', (req, res) => {
-  res.send('main route')
+  res.send('main route' + new Date())
 })
 
 app.get('/close', (req, res) => {
