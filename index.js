@@ -48,6 +48,11 @@ app.get('/', (req, res) => {
   res.send('main route')
 })
 
+app.get('/close', (req, res) => {
+  server.close()
+  res.send('sdfldqfjdskqf')
+})
+
 server.listen(5000, () => {
   console.log('Secure server is listening on port 5000')
 })

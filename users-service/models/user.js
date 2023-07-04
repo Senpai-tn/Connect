@@ -8,7 +8,8 @@ const userSchema = new Schema({
   tel: { type: String, default: null },
   role: {
     type: String,
-    enum: ['Gerant', 'Comptable', 'Admin', 'Super_Admin', 'Salarie'],
+    enum: ['Gerant', 'Comptable', 'Admin', 'Super_Admin', 'Salarie', 'User'],
+    default: 'Comptable',
   },
   photo: { type: String, default: null },
   createdAt: { type: Date, default: Date.now },
