@@ -78,6 +78,12 @@
                 "tel": {
                   "example": "any"
                 },
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
                 "adresse": {
                   "example": "any"
                 },
@@ -166,7 +172,10 @@
                 "role": {
                   "example": "any"
                 },
-                "photo": {
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
                   "example": "any"
                 },
                 "deletedAt": {
@@ -299,6 +308,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "402": {
+            "description": "Payment Required"
           }
         }
       }
