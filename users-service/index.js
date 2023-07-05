@@ -12,11 +12,9 @@ connect(
 ).then(() => {
   console.log('Users connected To DB')
 })
-const cors = require('cors')
-app.use(express.json())
-app.use(cors())
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
+app.use(express.json())
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.use('/', authRouter)
 app.use('/entreprise', entrepriseRouter)
 app.listen(5002, () => {

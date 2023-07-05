@@ -39,7 +39,7 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
   cors: {
-    origin: 'https://ccconnect.fr', //* ==> all ip adress
+    origin: '*', //* ==> all ip adress
     methods: ['GET', 'POST'],
   },
 })

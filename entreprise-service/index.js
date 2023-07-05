@@ -10,11 +10,11 @@ connect(
 ).then(() => {
   console.log('Entreprise connected To DB')
 })
-const cors = require('cors')
+
 const { Server } = require('socket.io')
 
 app.use(express.json())
-app.use(cors())
+
 app.use('/', router)
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
