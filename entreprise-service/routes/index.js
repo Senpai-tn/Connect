@@ -35,6 +35,7 @@ router.post('/', upload.single('logo'), async (req, res) => {
    * #swagger.tags = ['Add Entreprise']
    */
   try {
+    console.log('vfdsgkjsdfg')
     const { name, gerant, comptable, siret, tel, email, adress } = req.body
     const entreprise = new Entreprise({
       name,

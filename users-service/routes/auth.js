@@ -136,9 +136,10 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
       cp,
       ville,
       adresse,
-      civilité,
+      civility,
       listEntreprise,
     } = req.body
+
     const user = await User.findById(req.params.id)
     if (user) {
       Object.assign(user, {
@@ -155,7 +156,7 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
         cp: cp ? cp : user.cp,
         ville: ville ? ville : user.ville,
         adresse: adresse ? adresse : user.adresse,
-        civilité: civilité ? civilité : user.civilité,
+        civilité: civility ? civility : user.civilité,
         listEntreprise: listEntreprise ? listEntreprise : user.listEntreprise,
       })
       user.save().then((saved) => {
