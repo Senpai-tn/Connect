@@ -6,8 +6,7 @@ const { connect } = require('mongoose')
 const router = require('./routes')
 
 connect(
-  'mongodb://127.0.0.1:27017/Connect'
-  //'mongodb+srv://user18:arwxcjkytqQegca6@cluster0.aykhi.mongodb.net/Connect?authMechanism=DEFAULT'
+  'mongodb+srv://user18:arwxcjkytqQegca6@cluster0.aykhi.mongodb.net/Connect?authMechanism=DEFAULT'
 ).then(() => {
   console.log('Entreprise connected To DB')
 })

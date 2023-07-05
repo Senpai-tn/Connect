@@ -7,7 +7,9 @@ const entrepriseRouter = require('./routes/listeEntreprise')
 require('dotenv').config()
 
 const mongoose = require('mongoose')
-
+mongoose.connect('mongodb://127.0.0.1:27017/Connect').then(() => {
+  console.log('Users connected To DB')
+})
 const cors = require('cors')
 app.use(express.json())
 app.use(cors())
