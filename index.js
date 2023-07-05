@@ -1,11 +1,11 @@
 const express = require('express')
-const http2 = require('http2')
+
 const app = express()
 const default_proxy = require('express-http-proxy')
 const cors = require('cors')
-const fs = require('fs')
+
 const path = require('path')
-const upload = require('./uploadMiddleware')
+
 app.use(cors())
 app.use(express.json())
 
@@ -39,7 +39,7 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
   cors: {
-    origin: '*', //* ==> all ip adress
+    origin: 'https://ccconnect.fr', //* ==> all ip adress
     methods: ['GET', 'POST'],
   },
 })
