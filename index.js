@@ -2,11 +2,9 @@ const express = require('express')
 
 const app = express()
 const default_proxy = require('express-http-proxy')
-const cors = require('cors')
 
 const path = require('path')
 
-app.use(cors())
 app.use(express.json())
 
 const { Server } = require('socket.io')
