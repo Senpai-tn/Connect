@@ -37,12 +37,7 @@ app.use('/api/variables', proxy('http://localhost:5004'))
 
 const server = http.createServer(app)
 
-const io = new Server(server, {
-  cors: {
-    origin: '*', //* ==> all ip adress
-    methods: ['GET', 'POST'],
-  },
-})
+const io = new Server(server)
 
 app.get('/', (req, res) => {
   res.send('main route')
