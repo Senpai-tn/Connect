@@ -7,8 +7,11 @@ const path = require('path')
 const http = require('http')
 const server = http.createServer(app)
 app.use(express.json())
-app.options('*', cors({ origin: '*', optionsSuccessStatus: 200 }))
-app.use(cors({ origin: '*', optionsSuccessStatus: 200 }))
+app.options(
+  '*',
+  cors({ origin: 'https://app.ccconnect.fr', optionsSuccessStatus: 200 })
+)
+app.use(cors({ origin: 'https://app.ccconnect.fr', optionsSuccessStatus: 200 }))
 
 const { Server } = require('socket.io')
 
