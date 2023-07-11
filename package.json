@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"node users-service/swagger.js\" \"node entreprise-service/swagger.js\" \"node variable-service/swagger.js\" \"nodemon index.js\" \"nodemon auth-service/index.js\" \"nodemon users-service/index.js\" \"nodemon entreprise-service/index.js\" \"nodemon variable-service/index.js\" ",
-    "swagger-autogen": "concurrently \"node users-service/swagger.js\" \"node variable-service/swagger.js\" \"node entreprise-service/swagger.js\"    ",
+    "start": "concurrently \"node users-service/swagger.js\" \"node entreprise-service/swagger.js\" \"node variable-service/swagger.js\" \"node note_frais-service/swagger.js\" \"nodemon index.js\" \"nodemon auth-service/index.js\" \"nodemon users-service/index.js\" \"nodemon entreprise-service/index.js\" \"nodemon variable-service/index.js\" \"nodemon note_frais-service/index.js\" ",
+    "swagger-autogen": "concurrently \"node users-service/swagger.js\" \"node variable-service/swagger.js\" \"node entreprise-service/swagger.js\"  \"node note_frais-service/swagger.js\"  ",
     "prepare:auth": "cd auth-service && npm install",
     "prepare:users": "cd users-service && npm install",
     "prepare:entreprise": "cd entreprise-service && npm install",

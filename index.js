@@ -1,15 +1,18 @@
 const express = require('express')
-
+const cors = require('cors')
 const app = express()
 const default_proxy = require('express-http-proxy')
-
+require('dotenv').config()
 const path = require('path')
-
+const http = require('http')
+const server = http.createServer(app)
 app.use(express.json())
+app.options('*', cors({ origin: '*', optionsSuccessStatus: 200 }))
+app.use(cors({ origin: '*', optionsSuccessStatus: 200 }))
 
 const { Server } = require('socket.io')
 
-const http = require('http')
+const { verifToken } = require('./tokenMiddleware')
 
 const isMultipartRequest = function (req) {
   const contentTypeHeader = req.headers['content-type']
@@ -32,8 +35,7 @@ app.use('/api/auth', proxy('http://localhost:5001'))
 app.use('/api/users', proxy('http://localhost:5002'))
 app.use('/api/entreprises', proxy('http://localhost:5003'))
 app.use('/api/variables', proxy('http://localhost:5004'))
-
-const server = http.createServer(app)
+app.use('/api/note_frais', proxy('http://localhost:5005'))
 
 const io = new Server(server)
 

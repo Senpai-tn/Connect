@@ -13,9 +13,6 @@
   "paths": {
     "/search": {
       "post": {
-        "tags": [
-          "Search Entreprise"
-        ],
         "description": "",
         "parameters": [
           {
@@ -34,18 +31,12 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "502": {
-            "description": "Bad Gateway"
           }
         }
       }
     },
     "/": {
       "post": {
-        "tags": [
-          "Add Entreprise"
-        ],
         "description": "",
         "parameters": [
           {
@@ -54,25 +45,34 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
+                "date": {
                   "example": "any"
                 },
-                "gerant": {
+                "description": {
                   "example": "any"
                 },
-                "comptable": {
+                "motif": {
                   "example": "any"
                 },
-                "siret": {
+                "modeReglement": {
                   "example": "any"
                 },
-                "tel": {
+                "justificatif": {
                   "example": "any"
                 },
-                "email": {
+                "justificatifURL": {
                   "example": "any"
                 },
-                "adress": {
+                "montantHT": {
+                  "example": "any"
+                },
+                "montantTVA": {
+                  "example": "any"
+                },
+                "commentaire": {
+                  "example": "any"
+                },
+                "salarie": {
                   "example": "any"
                 }
               }
@@ -91,9 +91,6 @@
     },
     "/{id}": {
       "put": {
-        "tags": [
-          "Update Entreprise"
-        ],
         "description": "",
         "parameters": [
           {
@@ -108,34 +105,37 @@
             "schema": {
               "type": "object",
               "properties": {
-                "name": {
+                "date": {
                   "example": "any"
                 },
-                "gerant": {
+                "description": {
                   "example": "any"
                 },
-                "comptable": {
+                "motif": {
                   "example": "any"
                 },
-                "salaries": {
+                "modeReglement": {
                   "example": "any"
                 },
-                "siret": {
+                "justificatif": {
                   "example": "any"
                 },
-                "tel": {
+                "justificatifURL": {
                   "example": "any"
                 },
-                "email": {
+                "montantHT": {
                   "example": "any"
                 },
-                "cp": {
+                "montantTVA": {
                   "example": "any"
                 },
-                "ville": {
+                "commentaire": {
                   "example": "any"
                 },
-                "adresse": {
+                "salarie": {
+                  "example": "any"
+                },
+                "createdAt": {
                   "example": "any"
                 },
                 "deletedAt": {
@@ -148,81 +148,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/add_employee": {
-      "put": {
-        "tags": [
-          "Affecter Salarié"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id_employee": {
-                  "example": "any"
-                },
-                "id_entreprise": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/remove_employee": {
-      "put": {
-        "tags": [
-          "Affecter Salarié"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id_employee": {
-                  "example": "any"
-                },
-                "id_entreprise": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"

@@ -22,6 +22,9 @@ router.post('/search', async (req, res) => {
           gerant: users.find((user) => {
             return user._id == entreprise._doc.gerant
           }),
+          comptable: users.find((user) => {
+            return user._id == entreprise._doc.comptable
+          }),
         }
       })
     )
@@ -35,7 +38,6 @@ router.post('/', upload.single('logo'), async (req, res) => {
    * #swagger.tags = ['Add Entreprise']
    */
   try {
-    console.log('vfdsgkjsdfg')
     const { name, gerant, comptable, siret, tel, email, adress } = req.body
     const entreprise = new Entreprise({
       name,
@@ -79,7 +81,9 @@ router.put('/:id', upload.single('logo'), async (req, res) => {
       siret,
       tel,
       email,
-      adress,
+      cp,
+      ville,
+      adresse,
       deletedAt,
     } = req.body
     const entreprise = await Entreprise.findById(id)
@@ -92,7 +96,9 @@ router.put('/:id', upload.single('logo'), async (req, res) => {
         siret: siret ? siret : entreprise.siret,
         tel: tel ? tel : entreprise.tel,
         email: email ? email : entreprise.email,
-        adress: adress ? adress : entreprise.adress,
+        cp: cp ? cp : entreprise.cp,
+        ville: ville ? ville : entreprise.ville,
+        adresse: adresse ? adresse : entreprise.adresse,
         logo: req.file ? req.file.filename : entreprise.logo,
         deletedAt: deletedAt ? deletedAt : entreprise.deletedAt,
       })
