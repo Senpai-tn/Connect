@@ -7,6 +7,7 @@ const path = require('path')
 const http = require('http')
 const server = http.createServer(app)
 app.use(express.json())
+const whitelist = ['http://localhost:3000', 'https://app.ccconnect.fr']
 
 app.options('*', cors())
 const corsOptions = {
