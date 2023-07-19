@@ -9,7 +9,18 @@ const server = http.createServer(app)
 app.use(express.json())
 
 app.options('*', cors())
+const corsOptions = {
+  credentials: true,
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+}
 
+app.use(cors(corsOptions))
 const { Server } = require('socket.io')
 
 const { verifToken } = require('./tokenMiddleware')
