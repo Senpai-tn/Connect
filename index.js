@@ -53,7 +53,7 @@ const io = new Server(server)
 
 app.get('/', (req, res) => {
   res.send(
-    'main route \n /api/auth \n /api/users \n/api/entreprises \n/api/variables \n/api/note_frais'
+    'main route <br/>/api/users<br/>/api/entreprises <br/>/api/variables <br/>/api/note_frais'
   )
 })
 
