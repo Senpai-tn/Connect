@@ -1,7 +1,7 @@
 const axios = require('axios')
 const express = require('express')
 const upload = require('../../uploadMiddleware')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
 const saltRounds = 10
 
