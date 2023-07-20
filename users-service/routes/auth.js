@@ -11,7 +11,7 @@ const router = express.Router()
 
 router.post('/login', (req, res) => {
   /*
-   * #swagger.tags = ['Login']
+   * #swagger.tags = ["Login"]
    */
   try {
     const { email, password } = req.body
@@ -49,7 +49,7 @@ router.post('/login', (req, res) => {
 
 router.post('/register', upload.single('photo'), (req, res) => {
   /*
-   * #swagger.tags = ['Register']
+   * #swagger.tags = ["Register"]
    */
 
   try {
@@ -112,7 +112,7 @@ router.post('/register', upload.single('photo'), (req, res) => {
 
 router.get('/:id', async (req, res) => {
   /*
-   * #swagger.tags = ['Find by id']
+   * #swagger.tags = ["Find by id"]
    */
   const user = await User.findById(req.params.id)
   res.send(user)
@@ -120,7 +120,7 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', upload.single('photo'), async (req, res) => {
   /*
-   * #swagger.tags = ['Edit Profile']
+   * #swagger.tags = ["Edit Profile"]
    */
   try {
     const {
@@ -170,7 +170,7 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
 
 router.post('/search', async (req, res) => {
   /*
-   * #swagger.tags = ['Search']
+   * #swagger.tags = ["Search"]
    */
   try {
     const { filter } = req.body
@@ -183,7 +183,7 @@ router.post('/search', async (req, res) => {
 
 router.post('/restore', async (req, res) => {
   /*
-   * #swagger.tags = ['Restore']
+   * #swagger.tags = ["Restore"]
    */
   const { idList } = req.body
   const users = await User.find(idList && { _id: idList })
@@ -198,13 +198,13 @@ router.post('/restore', async (req, res) => {
 
 router.post('/add_user', upload.single('photo'), async (req, res) => {
   // if (!req.headers.authorization) {
-  //   return res.status(403).json({ error: 'No credentials sent!' })
+  //   return res.status(403).json({ error: "No credentials sent!" })
   // }
-  // var token = jwt.sign({ foo: 'bar' }, process.env.JWT_KEY)
-  // // var token = req.headers.authorization.split(' ')[1]
+  // var token = jwt.sign({ foo: "bar" }, process.env.JWT_KEY)
+  // // var token = req.headers.authorization.split(" ")[1]
   // jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
   // if (err) {
-  //   res.send('wrong token')
+  //   res.send("wrong token")
   //   return
   // } else
   {

@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.post('/', async (req, res) => {
   /*
-   * #swagger.tags = ['Add Entreprise']
+   * #swagger.tags = ["Add Entreprise"]
    */
   try {
     const { entreprise, gerant } = req.body
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/', async (req, res) => {
   /*
-   * #swagger.tags = ['Remove Entreprise']
+   * #swagger.tags = ["Remove Entreprise"]
    */
   try {
     const { entreprise, gerant } = req.body
