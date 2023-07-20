@@ -52,7 +52,9 @@ app.use('/api/note_frais', proxy('http://localhost:5005'))
 const io = new Server(server)
 
 app.get('/', (req, res) => {
-  res.send('main route')
+  res.send(
+    'main route \n /api/auth \n /api/users \n/api/entreprises \n/api/variables \n/api/note_frais'
+  )
 })
 
 app.get('/close', (req, res) => {
