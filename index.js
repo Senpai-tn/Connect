@@ -22,7 +22,6 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
-const { Server } = require('socket.io')
 
 const { verifToken } = require('./tokenMiddleware')
 
@@ -48,8 +47,7 @@ app.use('/api/users', proxy('http://localhost:5002'))
 app.use('/api/entreprises', proxy('http://localhost:5003'))
 app.use('/api/variables', proxy('http://localhost:5004'))
 app.use('/api/note_frais', proxy('http://localhost:5005'))
-
-const io = new Server(server)
+app.use('/api/notif', proxy('http://localhost:5006'))
 
 app.get('/', (req, res) => {
   res.send(
@@ -57,13 +55,6 @@ app.get('/', (req, res) => {
   )
 })
 
-app.get('/close', (req, res) => {
-  server.close()
-  res.send('sdfldqfjdskqf')
-})
-
 server.listen(5000, () => {
   console.log('Secure server is listening on port 5000')
 })
-
-module.exports = io

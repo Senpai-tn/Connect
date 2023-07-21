@@ -6,11 +6,12 @@ const xlsx = require('xlsx')
 var jwt = require('jsonwebtoken')
 const { checkRole } = require('../../tokenMiddleware')
 
-router.post('/search', checkRole(['SUPER_ADMIN']), async (req, res) => {
+router.post('/search', async (req, res) => {
   /*
    * #swagger.tags = ['Get All']
    */
   const { filter } = req.body
+
   console.log(filter)
   const variables = await Variable.find(filter)
   res.send(variables)
@@ -83,16 +84,20 @@ router.put('/', async (req, res) => {
   } catch (error) {}
 })
 
-router.post('/affect_to_user', checkRole('ggggg'), async (req, res) => {
-  /*
-   * #swagger.tags = ['Affecter to salarie']
-   */
-  try {
-    const { id_user } = req.body
-    console.log(req.body.idUser)
-    res.send({ r: req.body })
-  } catch (error) {}
-})
+router.post(
+  '/affect_to_user',
+  checkRole(['SUPER_ADMIN', 'COMPTABLE']),
+  async (req, res) => {
+    /*
+     * #swagger.tags = ['Affecter to salarie']
+     */
+    try {
+      const { id_user } = req.body
+      console.log(req.body.idUser)
+      res.send({ r: req.body })
+    } catch (error) {}
+  }
+)
 
 router.post('/restore', async (req, res) => {
   /*

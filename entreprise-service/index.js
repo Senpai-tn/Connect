@@ -11,8 +11,6 @@ connect(
   console.log('Entreprise connected To DB')
 })
 
-const { Server } = require('socket.io')
-
 app.use(express.json())
 
 app.use('/', router)

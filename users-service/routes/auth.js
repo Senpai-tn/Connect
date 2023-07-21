@@ -34,7 +34,7 @@ router.post('/login', (req, res) => {
           const user = await User.findOne({ uid: response.data.user.uid })
           if (!user.deletedAt) {
             if (!user.blockedAt) {
-              res.send({ ...user._doc })
+              res.send({ ...user._doc, token: null })
             } else res.status(401).send('user blocked')
           } else res.status(402).send('user deleted')
         }

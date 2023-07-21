@@ -19,20 +19,12 @@
         "description": "",
         "parameters": [
           {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "schema": {
               "type": "object",
               "properties": {
                 "filter": {
-                  "example": "any"
-                },
-                "idUser": {
                   "example": "any"
                 }
               }
@@ -42,9 +34,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }
