@@ -25,7 +25,7 @@ const doc = () => {
   }
 }
 
-const outputFile = 'note_frais-service/swagger-output.json'
-const endpointsFiles = ['note_frais-service/index.js']
+const outputFile = './swagger-output.json'
+const endpointsFiles = ['./index.js']
 
 swaggerAutogen(outputFile, endpointsFiles, doc)
