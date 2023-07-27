@@ -1,0 +1,159 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/search": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "filter": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "motif": {
+                  "example": "any"
+                },
+                "modeReglement": {
+                  "example": "any"
+                },
+                "justificatif": {
+                  "example": "any"
+                },
+                "justificatifURL": {
+                  "example": "any"
+                },
+                "montantHT": {
+                  "example": "any"
+                },
+                "montantTVA": {
+                  "example": "any"
+                },
+                "commentaire": {
+                  "example": "any"
+                },
+                "salarie": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "motif": {
+                  "example": "any"
+                },
+                "modeReglement": {
+                  "example": "any"
+                },
+                "justificatif": {
+                  "example": "any"
+                },
+                "justificatifURL": {
+                  "example": "any"
+                },
+                "montantHT": {
+                  "example": "any"
+                },
+                "montantTVA": {
+                  "example": "any"
+                },
+                "commentaire": {
+                  "example": "any"
+                },
+                "salarie": {
+                  "example": "any"
+                },
+                "createdAt": {
+                  "example": "any"
+                },
+                "deletedAt": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

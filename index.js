@@ -4,8 +4,16 @@ const app = express()
 const default_proxy = require('express-http-proxy')
 require('dotenv').config()
 const path = require('path')
-const http = require('http')
-const server = http.createServer(app)
+//const http = require('http')
+const https = require('https')
+const fs = require('fs')
+const server = https.createServer(
+  {
+    key: fs.readFileSync('cert/key.pem'),
+    cert: fs.readFileSync('cert/cert.pem'),
+  },
+  app
+)
 app.use(express.json())
 const whitelist = ['http://localhost:3000', 'https://app.ccconnect.fr']
 

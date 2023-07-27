@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"nodemon index.js\" \"nodemon auth-service/index.js\" \"nodemon users-service/index.js\" \"nodemon entreprise-service/index.js\" \"nodemon variable-service/index.js\" \"nodemon note_frais-service/index.js\" \"nodemon notif-service/index.js\" ",
-    "swagger-autogen": "concurrently \"node users-service/swagger.js\" \"node variable-service/swagger.js\" \"node entreprise-service/swagger.js\"  \"node note_frais-service/swagger.js\"  ",
+    "swagger-autogen": "concurrently \"node users-service/swagger.js\" \"node variable-service/swagger.js\" \"node entreprise-service/swagger.js\"  \"node note_frais-service/swagger.js\" \"node notif-service/swagger.js\"  ",
     "prepare:auth": "cd auth-service && npm install",
     "prepare:users": "cd users-service && npm install",
     "prepare:entreprise": "cd entreprise-service && npm install",
@@ -19,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -27,6 +28,7 @@
     "firebase-admin": "^11.8.0",
     "firebaseui": "^6.0.2",
     "http-proxy-middleware": "^2.0.6",
+    "https": "^1.0.0",
     "jsonwebtoken": "^9.0.0",
     "module-alias": "^2.2.3",
     "mongoose": "^7.2.1",
@@ -36,6 +38,6 @@
     "read-excel-file": "^5.6.1",
     "socket.io": "^4.7.0",
     "socket.io-redis": "^6.1.1",
-    "bcrypt": "^5.1.0"
+    "swagger-autogen": "^2.23.5"
   }
 }
