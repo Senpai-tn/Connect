@@ -54,7 +54,6 @@ app.use('/api/users', proxy('http://localhost:5002'))
 app.use('/api/entreprises', proxy('http://localhost:5003'))
 app.use('/api/variables', proxy('http://localhost:5004'))
 app.use('/api/note_frais', proxy('http://localhost:5005'))
-app.use('/api/notif', proxy('http://localhost:5006'))
 
 app.get('/', (req, res) => {
   res.send(

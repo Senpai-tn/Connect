@@ -49,6 +49,6 @@ app.post('/register', (req, res) => {
     res.status(500).send({ error: 'error' })
   }
 })
-server.listen(5001, () => {
+app.listen(5001, () => {
   console.log('auth service started')
 })

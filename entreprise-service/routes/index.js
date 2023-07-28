@@ -12,9 +12,8 @@ router.post('/search', async (req, res) => {
   try {
     const filter = req.body.filter
     const entreprises = await Entreprise.find(filter)
-    const response = await axios.post('http://127.0.0.1:5000/api/users/search')
+    const response = await axios.post('http://127.0.0.1:5002/search')
     const users = response.data
-
     res.send(
       entreprises.map((entreprise) => {
         return {

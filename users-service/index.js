@@ -28,6 +28,6 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.use('/', authRouter)
 app.use('/entreprise', entrepriseRouter)
 
-server.listen(5002, () => {
+app.listen(5002, () => {
   console.log('users service started')
 })

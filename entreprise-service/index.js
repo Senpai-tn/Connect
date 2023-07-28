@@ -26,6 +26,6 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.get('/', (req, res) => {
   res.send('entreprise service')
 })
-server.listen(5003, () => {
+app.listen(5003, () => {
   console.log('entreprise service started')
 })

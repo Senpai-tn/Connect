@@ -24,6 +24,6 @@ app.get('/', (req, res) => {
   res.send('note frais service')
 })
 app.use('/', router)
-server.listen(5005, () => {
+app.listen(5005, () => {
   console.log('note_frais started')
 })

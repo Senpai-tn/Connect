@@ -22,6 +22,6 @@ connect(
   console.log('variable connected To DB')
 })
 app.use('/', variableRouter)
-server.listen(5004, () => {
+app.listen(5004, () => {
   console.log('variable started')
 })
