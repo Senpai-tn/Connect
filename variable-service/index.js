@@ -1,5 +1,14 @@
 const express = require('express')
 const app = express()
+const https = require('https')
+const fs = require('fs')
+const server = https.createServer(
+  {
+    key: fs.readFileSync('./cert/key.pem'),
+    cert: fs.readFileSync('./cert/cert.pem'),
+  },
+  app
+)
 const variableRouter = require('./routes')
 const { connect } = require('mongoose')
 const swaggerUi = require('swagger-ui-express')
@@ -13,6 +22,6 @@ connect(
   console.log('variable connected To DB')
 })
 app.use('/', variableRouter)
-app.listen(5004, () => {
+server.listen(5004, () => {
   console.log('variable started')
 })

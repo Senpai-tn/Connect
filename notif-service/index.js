@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
-const http = require('http')
-
+const https = require('https')
+const fs = require('fs')
 const { connect } = require('mongoose')
 const Notif = require('./models/Notif')
 const swaggerUi = require('swagger-ui-express')
@@ -11,7 +11,13 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use(cors())
 app.use(express.json())
-const server = http.createServer(app)
+const server = https.createServer(
+  {
+    key: fs.readFileSync('./cert/key.pem'),
+    cert: fs.readFileSync('./cert/cert.pem'),
+  },
+  app
+)
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
