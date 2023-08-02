@@ -34,16 +34,17 @@ router.post('/login', (req, res) => {
           const user = await User.findOne({ uid: response.data.user.uid })
           if (!user.deletedAt) {
             if (!user.blockedAt) {
-              res.send({ ...user._doc, token: null })
+              var token = jwt.sign({ user: user._doc }, process.env.JWT_KEY, {})
+              res.send({ user: user._doc, token })
             } else res.status(401).send('user blocked')
           } else res.status(402).send('user deleted')
         }
       })
       .catch((error) => {
-        res.send({ ...error })
+        res.send({ message: error.message })
       })
   } catch (error) {
-    res.status(500).send({ ...error })
+    res.status(500).send({ message: error.message })
   }
 })
 
@@ -138,6 +139,7 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
       adresse,
       civility,
       listEntreprise,
+      socketID,
     } = req.body
 
     const user = await User.findById(req.params.id)
@@ -155,6 +157,7 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
         dateNaissance: dateNaissance ? dateNaissance : user.dateNaissance,
         cp: cp ? cp : user.cp,
         ville: ville ? ville : user.ville,
+        socketID: socketID ? socketID : user.socketID,
         adresse: adresse ? adresse : user.adresse,
         civilité: civility ? civility : user.civilité,
         listEntreprise: listEntreprise ? listEntreprise : user.listEntreprise,

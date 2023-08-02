@@ -21,6 +21,7 @@ const userSchema = new Schema({
   adresse: { type: String, default: null },
   civilité: { type: String, default: null },
   listEntreprise: { type: [{ type: Schema.Types.ObjectId }], default: [] },
+  socketID: String,
 })
 const User = model('users', userSchema)
 
