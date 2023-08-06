@@ -13,6 +13,10 @@ const entrepriseSchema = new Schema({
   logo: { type: String },
   createdAt: { type: Date, default: Date.now },
   deletedAt: { type: Date, default: null },
+  emailComptabilite: { type: String, default: '' },
+  emailSocial: { type: String, default: '' },
+  emailJuridique: { type: String, default: '' },
+  emailGeneral: { type: String, default: '' },
 })
 
 const Entreprise = model('entreprises', entrepriseSchema)

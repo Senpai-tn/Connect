@@ -3,16 +3,9 @@ const {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } = require('firebase/auth')
-const https = require('https')
-const fs = require('fs')
+
 const app = express()
-const server = https.createServer(
-  {
-    key: fs.readFileSync('./cert/key.pem'),
-    cert: fs.readFileSync('./cert/cert.pem'),
-  },
-  app
-)
+
 const { auth } = require('../firebase')
 
 app.use(express.json())

@@ -1,5 +1,3 @@
-const express = require('express')
-const proxy = require('express-http-proxy')
 const upload = require('../../uploadMiddleware')
 const Entreprise = require('../localModels/entreprise')
 const router = require('express').Router()
@@ -37,7 +35,19 @@ router.post('/', upload.single('logo'), async (req, res) => {
    * #swagger.tags = ['Add Entreprise']
    */
   try {
-    const { name, gerant, comptable, siret, tel, email, adress } = req.body
+    const {
+      name,
+      gerant,
+      comptable,
+      siret,
+      tel,
+      email,
+      adress,
+      emailComptabilite,
+      emailSocial,
+      emailJuridique,
+      emailGeneral,
+    } = req.body
     const entreprise = new Entreprise({
       name,
       gerant,
@@ -47,6 +57,10 @@ router.post('/', upload.single('logo'), async (req, res) => {
       email,
       adress,
       logo: req.file.filename,
+      emailComptabilite,
+      emailSocial,
+      emailJuridique,
+      emailGeneral,
     })
     entreprise
       .save()
@@ -84,6 +98,10 @@ router.put('/:id', upload.single('logo'), async (req, res) => {
       ville,
       adresse,
       deletedAt,
+      emailComptabilite,
+      emailSocial,
+      emailJuridique,
+      emailGeneral,
     } = req.body
     const entreprise = await Entreprise.findById(id)
     if (entreprise) {
@@ -100,6 +118,14 @@ router.put('/:id', upload.single('logo'), async (req, res) => {
         adresse: adresse ? adresse : entreprise.adresse,
         logo: req.file ? req.file.filename : entreprise.logo,
         deletedAt: deletedAt ? deletedAt : entreprise.deletedAt,
+        emailComptabilite: emailComptabilite
+          ? emailComptabilite
+          : entreprise.emailComptabilite,
+        emailSocial: emailSocial ? emailSocial : entreprise.emailSocial,
+        emailJuridique: emailJuridique
+          ? emailJuridique
+          : entreprise.emailJuridique,
+        emailGeneral: emailGeneral ? emailGeneral : entreprise.emailGeneral,
       })
       entreprise
         .save()
