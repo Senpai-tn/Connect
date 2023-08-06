@@ -1,14 +1,6 @@
 const express = require('express')
 const app = express()
-const https = require('https')
-const fs = require('fs')
-const server = https.createServer(
-  {
-    key: fs.readFileSync('./cert/key.pem'),
-    cert: fs.readFileSync('./cert/cert.pem'),
-  },
-  app
-)
+
 const variableRouter = require('./routes')
 const { connect } = require('mongoose')
 const swaggerUi = require('swagger-ui-express')
