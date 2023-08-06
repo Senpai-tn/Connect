@@ -22,7 +22,7 @@ connect(
 app.use(express.json())
 
 app.use('/', router)
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/aron', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.get('/', (req, res) => {
   res.send('entreprise service')
 })

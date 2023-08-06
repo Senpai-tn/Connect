@@ -6,7 +6,7 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger-output.json')
 
 app.use(express.json())
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/aron', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 connect(
   'mongodb+srv://user18:arwxcjkytqQegca6@cluster0.aykhi.mongodb.net/Connect?authMechanism=DEFAULT'
 ).then(() => {

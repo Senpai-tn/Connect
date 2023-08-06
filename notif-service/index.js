@@ -9,7 +9,7 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger-output.json')
 const app = express()
 
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/aron', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use(cors())
 app.use(express.json())

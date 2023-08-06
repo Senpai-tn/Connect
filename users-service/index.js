@@ -16,7 +16,7 @@ connect(
 
 app.use(express.json())
 
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/aron', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.use('/', authRouter)
 app.use('/entreprise', entrepriseRouter)
 
