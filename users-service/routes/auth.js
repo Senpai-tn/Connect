@@ -111,11 +111,11 @@ router.post('/register', upload.single('photo'), (req, res) => {
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/', async (req, res) => {
   /*
    * #swagger.tags = ["Find by id"]
    */
-  const user = await User.findById(req.params.id)
+  const user = await User.findById(req.query.id)
   res.send(user)
 })
 
