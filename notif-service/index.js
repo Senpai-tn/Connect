@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const http = require('http')
+const https = require('https')
 const fs = require('fs')
 const axios = require('axios')
 const { connect } = require('mongoose')
@@ -13,7 +13,13 @@ app.use('/aron', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use(cors())
 app.use(express.json())
-const server = http.createServer(app)
+const server = https.createServer(
+  {
+    key: fs.readFileSync('cert/key.pem'),
+    cert: fs.readFileSync('cert/cert.pem'),
+  },
+  app
+)
 const io = require('socket.io')(server, {
   cors: {
     origin: '*',
