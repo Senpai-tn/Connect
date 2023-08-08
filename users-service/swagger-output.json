@@ -104,6 +104,12 @@
                 },
                 "civilité": {
                   "example": "any"
+                },
+                "listContributeurs": {
+                  "example": "any"
+                },
+                "pays": {
+                  "example": "any"
                 }
               }
             }
@@ -122,7 +128,7 @@
         }
       }
     },
-    "/{id}": {
+    "/": {
       "get": {
         "tags": [
           "Find by id"
@@ -131,8 +137,7 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "type": "string"
           }
         ],
@@ -141,7 +146,9 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/{id}": {
       "put": {
         "tags": [
           "Edit Profile"
@@ -200,6 +207,15 @@
                   "example": "any"
                 },
                 "listEntreprise": {
+                  "example": "any"
+                },
+                "socketID": {
+                  "example": "any"
+                },
+                "pays": {
+                  "example": "any"
+                },
+                "listContributeurs": {
                   "example": "any"
                 }
               }
@@ -275,6 +291,9 @@
     },
     "/add_user": {
       "post": {
+        "tags": [
+          "Add user"
+        ],
         "description": "",
         "parameters": [
           {
@@ -300,6 +319,9 @@
                 },
                 "role": {
                   "example": "any"
+                },
+                "pays": {
+                  "example": "any"
                 }
               }
             }
@@ -311,6 +333,26 @@
           },
           "402": {
             "description": "Payment Required"
+          }
+        }
+      }
+    },
+    "/import_excel": {
+      "post": {
+        "tags": [
+          "Import from Excel file"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }

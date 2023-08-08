@@ -2,8 +2,9 @@ const multer = require('multer')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    console.log(file.mimetype)
-    file.mimetype === 'application/pdf'
+    req.query.path
+      ? cb(null, `public/${req.query.path}`)
+      : file.mimetype === 'application/pdf'
       ? cb(null, 'public/pdf')
       : file.mimetype.includes('image/')
       ? cb(null, 'public/images')

@@ -11,37 +11,15 @@
     "http"
   ],
   "paths": {
-    "/search": {
-      "post": {
-        "tags": [
-          "Search Entreprise"
-        ],
+    "/": {
+      "get": {
         "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "filter": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "502": {
-            "description": "Bad Gateway"
           }
         }
-      }
-    },
-    "/": {
+      },
       "post": {
         "tags": [
           "Add Entreprise"
@@ -74,6 +52,18 @@
                 },
                 "adress": {
                   "example": "any"
+                },
+                "emailComptabilite": {
+                  "example": "any"
+                },
+                "emailSocial": {
+                  "example": "any"
+                },
+                "emailJuridique": {
+                  "example": "any"
+                },
+                "emailGeneral": {
+                  "example": "any"
                 }
               }
             }
@@ -85,6 +75,36 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/search": {
+      "post": {
+        "tags": [
+          "Search Entreprise"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "filter": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "502": {
+            "description": "Bad Gateway"
           }
         }
       }
@@ -139,6 +159,18 @@
                   "example": "any"
                 },
                 "deletedAt": {
+                  "example": "any"
+                },
+                "emailComptabilite": {
+                  "example": "any"
+                },
+                "emailSocial": {
+                  "example": "any"
+                },
+                "emailJuridique": {
+                  "example": "any"
+                },
+                "emailGeneral": {
                   "example": "any"
                 }
               }
@@ -226,6 +258,26 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/import_excel": {
+      "post": {
+        "tags": [
+          "Import from Excel file"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }

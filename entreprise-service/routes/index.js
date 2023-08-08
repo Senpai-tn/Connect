@@ -2,6 +2,7 @@ const upload = require('../../uploadMiddleware')
 const Entreprise = require('../localModels/entreprise')
 const router = require('express').Router()
 const axios = require('axios')
+const node_xlsx = require('node-xlsx')
 
 router.post('/search', async (req, res) => {
   /*
@@ -188,5 +189,30 @@ router.put('/remove_employee', async (req, res) => {
     res.status(500).send(error)
   }
 })
+
+router.post(
+  '/import_excel',
+  upload.single('list_entreprise'),
+  async (req, res) => {
+    /*
+     * #swagger.tags = ["Import from Excel file"]
+     */
+    try {
+      const { path = 'imports_entreprises' } = req.query
+      const workSheetsFromFile = node_xlsx.parse(
+        `public/${path}/${req.file.filename}`
+      )
+
+      const data = []
+      workSheetsFromFile.map((feuille) => {
+        feuille
+        return data.push(feuille.data)
+      })
+      res.send(data)
+    } catch (error) {
+      res.send({ message: error.message })
+    }
+  }
+)
 
 module.exports = router

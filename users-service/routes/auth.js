@@ -3,6 +3,7 @@ const express = require('express')
 const upload = require('../../uploadMiddleware')
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
+const node_xlsx = require('node-xlsx')
 const saltRounds = 10
 
 const User = require('../models/user')
@@ -67,6 +68,8 @@ router.post('/register', upload.single('photo'), (req, res) => {
       cp,
       ville,
       civilité,
+      listContributeurs,
+      pays,
     } = req.body
     axios
       .post('http://localhost:5000/api/auth/register', { email, password })
@@ -92,6 +95,8 @@ router.post('/register', upload.single('photo'), (req, res) => {
             cp,
             ville,
             civilité,
+            listContributeurs,
+            pays,
           })
           user
             .save()
@@ -140,6 +145,8 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
       civility,
       listEntreprise,
       socketID,
+      pays,
+      listContributeurs,
     } = req.body
 
     const user = await User.findById(req.params.id)
@@ -157,10 +164,14 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
         dateNaissance: dateNaissance ? dateNaissance : user.dateNaissance,
         cp: cp ? cp : user.cp,
         ville: ville ? ville : user.ville,
+        pays: pays ? pays : user.pays,
         socketID: socketID ? socketID : user.socketID,
         adresse: adresse ? adresse : user.adresse,
         civilité: civility ? civility : user.civilité,
         listEntreprise: listEntreprise ? listEntreprise : user.listEntreprise,
+        listContributeurs: listContributeurs
+          ? listContributeurs
+          : user.listContributeurs,
       })
       user.save().then((saved) => {
         res.send(saved)
@@ -200,18 +211,11 @@ router.post('/restore', async (req, res) => {
 })
 
 router.post('/add_user', upload.single('photo'), async (req, res) => {
-  // if (!req.headers.authorization) {
-  //   return res.status(403).json({ error: "No credentials sent!" })
-  // }
-  // var token = jwt.sign({ foo: "bar" }, process.env.JWT_KEY)
-  // // var token = req.headers.authorization.split(" ")[1]
-  // jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-  // if (err) {
-  //   res.send("wrong token")
-  //   return
-  // } else
+  /*
+   * #swagger.tags = ["Add user"]
+   */
   {
-    const { firstName, lastName, dateNaissance, civilité, email, role } =
+    const { firstName, lastName, dateNaissance, civilité, email, role, pays } =
       req.body
     axios
       .post('http://localhost:5000/api/auth/register', {
@@ -238,6 +242,7 @@ router.post('/add_user', upload.single('photo'), async (req, res) => {
             civilité,
             photo: req.file ? req.file.filename : null,
             role,
+            pays,
           })
           user
             .save()
@@ -251,5 +256,26 @@ router.post('/add_user', upload.single('photo'), async (req, res) => {
       })
   }
 })
+
+router.post(
+  '/import_excel',
+  upload.single('list_salarie'),
+  async (req, res) => {
+    /*
+     * #swagger.tags = ["Import from Excel file"]
+     */
+    const {} = req.body
+    const { path = 'imports_salaries' } = req.query
+    try {
+      const workSheetsFromFile = node_xlsx.parse(
+        `public/${path}/${req.file.filename}`
+      )
+      console.log(workSheetsFromFile)
+      const data = []
+      workSheetsFromFile.map((feuille) => data.push(feuille.data))
+      res.send(data)
+    } catch (error) {}
+  }
+)
 
 module.exports = router

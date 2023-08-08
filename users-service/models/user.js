@@ -19,6 +19,7 @@ const userSchema = new Schema({
   cp: { type: String, default: null },
   ville: { type: String, default: null },
   adresse: { type: String, default: null },
+  pays: { type: String, default: null },
   civilité: { type: String, default: null },
   listContributeurs: { type: [{ type: Schema.Types.ObjectId }], default: [] },
   listEntreprise: { type: [{ type: Schema.Types.ObjectId }], default: [] },
