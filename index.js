@@ -4,16 +4,15 @@ const app = express()
 const default_proxy = require('express-http-proxy')
 require('dotenv').config()
 const path = require('path')
-const http = require('http')
+const https = require('https')
 const fs = require('fs')
-const axios = require('axios')
-const server = http.createServer(app)
-const io = require('socket.io')(server, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
+const server = https.createServer(
+  {
+    key: fs.readFileSync('cert/key.pem'),
+    cert: fs.readFileSync('cert/cert.pem'),
   },
-})
+  app
+)
 app.use(express.json())
 
 app.options('*', cors())
@@ -50,49 +49,7 @@ app.get('/', (req, res) => {
     'main route <br/>/api/users<br/>/api/entreprises <br/>/api/variables <br/>/api/note_frais'
   )
 })
-io.sockets.on('connection', function (socket) {
-  socket.on('setId', (data) => {
-    if (data.user !== null)
-      axios
-        .put(`http://localhost:5000/api/users/${data.user._id}`, {
-          ...data.user,
-          socketID: socket.id,
-        })
-        .then((response) => {
-          socket.emit('updateUser', { user: response.data })
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-  })
-})
-app.post('/', async (req, res) => {
-  /**
-   * #swagger.tags = ['Envoyer notif']
-   */
-  try {
-    const {
-      reciever,
-      sender,
-      content,
-      type,
-      saveNotif = true,
-      event,
-    } = req.body
 
-    io.to(reciever.socketID || null).emit(event, {
-      reciever,
-      sender,
-      content,
-      type,
-      saveNotif,
-      event,
-    })
-    res.send('send')
-  } catch (error) {
-    res.status(503).send({ message: error.message })
-  }
-})
-server.listen(5000, () => {
+app.listen(5000, () => {
   console.log('Secure server is listening on port 5000')
 })
