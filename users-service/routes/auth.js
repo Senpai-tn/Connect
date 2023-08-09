@@ -3,9 +3,9 @@ const express = require('express')
 const upload = require('../../uploadMiddleware')
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer')
 const node_xlsx = require('node-xlsx')
 const saltRounds = 10
+const nodemailer = require('nodemailer')
 const transporter = nodemailer.createTransport({
   host: 'smtp.forwardemail.net',
   port: 465,
