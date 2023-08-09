@@ -3,9 +3,19 @@ const express = require('express')
 const upload = require('../../uploadMiddleware')
 const bcrypt = require('bcryptjs')
 var jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 const node_xlsx = require('node-xlsx')
 const saltRounds = 10
-
+const transporter = nodemailer.createTransport({
+  host: 'smtp.forwardemail.net',
+  port: 465,
+  secure: true,
+  auth: {
+    // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+    user: 'REPLACE-WITH-YOUR-ALIAS@YOURDOMAIN.COM',
+    pass: 'REPLACE-WITH-YOUR-GENERATED-PASSWORD',
+  },
+})
 const User = require('../models/user')
 
 const router = express.Router()

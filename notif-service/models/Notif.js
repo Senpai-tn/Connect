@@ -6,6 +6,7 @@ const notifSchema = new Schema({
   type: { type: String },
   createdAt: { type: Date, default: Date.now },
   state: { type: String },
+  event: { type: String },
 })
 const Notif = model('notifs', notifSchema)
 module.exports = Notif
