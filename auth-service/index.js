@@ -20,6 +20,7 @@ app.post('/login', (req, res) => {
       .then(async (value) => {
         res.status(200).send(value)
       })
+
       .catch((error) => {
         res.send(error)
       })
@@ -42,6 +43,7 @@ app.post('/register', (req, res) => {
     res.status(500).send({ error: 'error' })
   }
 })
+
 app.listen(5001, () => {
   console.log('auth service started')
 })

@@ -10,7 +10,6 @@ const swaggerFile = require('./swagger-output.json')
 const app = express()
 
 app.use('/aron', swaggerUi.serve, swaggerUi.setup(swaggerFile))
-
 app.use(cors())
 app.use(express.json())
 const server = https.createServer(

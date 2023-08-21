@@ -1,3 +1,4 @@
 node_modules
 ./variable-service/node_modules
 ./users-service/node_modules
+sendgrid.env

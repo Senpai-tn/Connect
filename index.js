@@ -43,10 +43,16 @@ app.use('/api/users', proxy('http://localhost:5002'))
 app.use('/api/entreprises', proxy('http://localhost:5003'))
 app.use('/api/variables', proxy('http://localhost:5004'))
 app.use('/api/note_frais', proxy('http://localhost:5005'))
+app.use('/api/actions', proxy('http://localhost:5007'))
 
 app.get('/', (req, res) => {
   res.send(
-    'main route <br/>/api/users<br/>/api/entreprises <br/>/api/variables <br/>/api/note_frais'
+    `main route : <br/>
+    /api/users<br/>
+    /api/entreprises <br/>
+    /api/variables<br/> 
+    /api/note_frais<br/>
+    /api/actions<br/>`
   )
 })
 

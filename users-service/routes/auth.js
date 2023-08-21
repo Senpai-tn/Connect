@@ -264,17 +264,60 @@ router.post(
     /*
      * #swagger.tags = ["Import from Excel file"]
      */
-    const {} = req.body
-    const { path = 'imports_salaries' } = req.query
+
     try {
-      const workSheetsFromFile = node_xlsx.parse(
-        `public/${path}/${req.file.filename}`
-      )
-      console.log(workSheetsFromFile)
-      const data = []
-      workSheetsFromFile.map((feuille) => data.push(feuille.data))
-      res.send(data)
-    } catch (error) {}
+      const { role } = req.body
+      const { path = 'imports_salaries' } = req.query
+      const workSheetsFromFile = req.file
+        ? node_xlsx.parse(`public/${path}/${req.file.filename}`, {
+            type: 'binary',
+            cellDates: true,
+            cellNF: false,
+            cellText: false,
+          })
+        : []
+
+      const succeed = []
+      const failed = []
+      {
+        await Promise.all(
+          workSheetsFromFile.map(async (feuille) => {
+            await Promise.all(
+              feuille.data.map(async (row) => {
+                await axios
+                  .post(`${process.env.baseURL}/auth/register`, {
+                    email: row[2],
+                    password: row[5],
+                  })
+                  .then(async (response) => {
+                    const u = new User({
+                      uid: response.data.uid,
+                      firstName: row[0],
+                      lastName: row[1],
+                      email: row[2],
+                      dateNaissance: new Date(row[3]),
+                      tel: row[4],
+                      role: role,
+                    })
+                    await u
+                      .save()
+                      .then((savedUser) => {
+                        succeed.push(savedUser)
+                      })
+                      .catch(async (error) => {
+                        failed.push(u)
+                      })
+                  })
+              })
+            )
+          })
+        )
+      }
+
+      res.send({ succeed, failed })
+    } catch (error) {
+      res.status(500).send({ error: error.message })
+    }
   }
 )
 
