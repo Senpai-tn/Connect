@@ -59,6 +59,12 @@
                 },
                 "value": {
                   "example": "any"
+                },
+                "idSalarie": {
+                  "example": "any"
+                },
+                "idEntreprise": {
+                  "example": "any"
                 }
               }
             }
@@ -67,6 +73,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"

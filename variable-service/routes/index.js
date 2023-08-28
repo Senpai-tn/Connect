@@ -5,7 +5,9 @@ const fs = require('fs')
 const xlsx = require('xlsx')
 var jwt = require('jsonwebtoken')
 const { checkRole } = require('../../tokenMiddleware')
-
+const { calcBusinessDays } = require('../../utils/nbJoursOuvrable')
+const dayjs = require('dayjs')
+const Entreprise = require('../../entreprise-service/localModels/entreprise')
 router.post('/search', async (req, res) => {
   /*
    * #swagger.tags = ['Get All']
@@ -52,23 +54,37 @@ router.post('/', async (req, res) => {
    */
   try {
     const { name, type, value, idSalarie, idEntreprise } = req.body
-    const variable = new Variable({
-      name,
-      type,
-      value,
-      idSalarie,
-      idEntreprise,
-    })
-    variable
-      .save()
-      .then((saved) => {
-        res.send(saved)
+    let nb = null
+    const entreprise = await Entreprise.findById(idEntreprise)
+    if (entreprise !== null) {
+      if (type === 'intervalle') {
+        nb = calcBusinessDays(
+          dayjs(value.du).toDate(),
+          dayjs(value.au).toDate(),
+          entreprise.nbJour
+        )
+      }
+
+      const variable = new Variable({
+        name,
+        type,
+        value,
+        idSalarie,
+        idEntreprise,
+        nbJour: nb,
       })
-      .catch((error) => {
-        res.status(500).send(error)
-      })
+
+      variable
+        .save()
+        .then((saved) => {
+          res.send(saved)
+        })
+        .catch((error) => {
+          res.status(500).send(error)
+        })
+    } else res.status(404).send('verify entreprise')
   } catch (error) {
-    res.status(500).send(error)
+    res.status(500).send({ error: error.message })
   }
 })
 

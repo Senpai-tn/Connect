@@ -17,6 +17,7 @@ const entrepriseSchema = new Schema({
   emailSocial: { type: String, default: '' },
   emailJuridique: { type: String, default: '' },
   emailGeneral: { type: String, default: '' },
+  nbJour: { type: Number, default: 5 },
 })
 
 const Entreprise = model('entreprises', entrepriseSchema)

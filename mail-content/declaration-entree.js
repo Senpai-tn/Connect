@@ -1,4 +1,4 @@
-const declaration_entree = (savedUser) => {
+const declaration_entree = (user) => {
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +7,7 @@ const declaration_entree = (savedUser) => {
     <title>Document</title>
   </head>
   <body>
-  <h1>Declaration Entré pour le salarié ${savedUser.firstName} ${savedUser.lastName}</h1>
+  <h1>Declaration Entré pour le salarié ${user.firstName} ${user.lastName}</h1>
   </body>
 </html>`
 }
