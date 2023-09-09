@@ -24,6 +24,9 @@ const userSchema = new Schema({
   listContributeurs: { type: [{ type: Schema.Types.ObjectId }], default: [] },
   listEntreprise: { type: [{ type: Schema.Types.ObjectId }], default: [] },
   socketID: String,
+  salaire: { type: Number || null, default: null },
+  numeroSociale: { type: Number || null, default: null },
+  idEntreprise: { type: Schema.Types.ObjectId, default: null },
 })
 const User = model('users', userSchema)
 

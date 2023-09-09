@@ -17,65 +17,90 @@ const config = {
 
 router.post('/entree', async (req, res) => {
   try {
-    const { idEntreprise, salarie } = req.body
-    if (entreprise.salaries.includes(idSalarie))
-      if (salarie) {
-        await axios
-          .post(`${process.env.baseURL}/auth/register`, {
-            email: salarie.email,
-            password: salarie.password,
+    const {
+      siret,
+      firstName,
+      lastName,
+      dateNaissance,
+      numeroSociale,
+      adresseSalarie,
+      dateDebutContrat,
+      tempsTravailHebdomadaire,
+      dateFinContrat,
+      remunerationbruteMensuelle,
+      posteOccupe,
+      complementDinformation,
+      idEntreprise,
+      email,
+      password,
+    } = req.body
+    const entreprise = await Entreprise.findOne({ siret })
+    if (entreprise) {
+      await axios
+        .post(`${process.env.baseURL}/auth/register`, {
+          email: email,
+          password: password,
+        })
+        .then((response) => {
+          res.send(response.data)
+          const user = new User({
+            firstName,
+            lastName,
+            dateNaissance,
+            numeroSociale,
+            adresseSalarie,
+            dateDebutContrat,
+            tempsTravailHebdomadaire,
+            dateFinContrat,
+            remunerationbruteMensuelle,
+            posteOccupe,
+            complementDinformation,
+            uid: response.data.uid,
+            role: 'Salarie',
+            email,
           })
-          .then((response) => {
-            const user = new User({
-              ...salarie,
-              uid: response.data.uid,
-              role: 'Salarie',
-            })
-
-            user
-              .save()
-              .then(async (savedUser) => {
-                const entreprise = await Entreprise.findById(idEntreprise)
-                console.log(declaration_entree(savedUser))
-                salarie && entreprise.salaries.push(savedUser)
-                entreprise.save().then((savedEntreprise) => {
-                  savedEntreprise.emailComptabilite
-                    ? axios
-                        .post(
-                          'https://api.brevo.com/v3/smtp/email',
-                          {
-                            sender: {
-                              name: 'Khaled Sahli',
-                              email: 'khaledsahli36@gmail.com',
-                            },
-                            to: [
-                              {
-                                email: savedEntreprise.emailComptabilite,
-                                name: 'Service Comptabilité',
-                              },
-                            ],
-                            subject: `Declaration d'entrée`,
-                            htmlContent: declaration_entree(savedUser),
+          user
+            .save()
+            .then(async (savedUser) => {
+              const entreprise = await Entreprise.findById(idEntreprise)
+              console.log(declaration_entree(savedUser))
+              salarie && entreprise.salaries.push(savedUser)
+              entreprise.save().then((savedEntreprise) => {
+                savedEntreprise.emailComptabilite
+                  ? axios
+                      .post(
+                        'https://api.brevo.com/v3/smtp/email',
+                        {
+                          sender: {
+                            name: 'Khaled Sahli',
+                            email: 'khaledsahli36@gmail.com',
                           },
-                          config
-                        )
-                        .then((response) => {
-                          res.send(savedEntreprise)
-                        })
-                    : res.send(
-                        'salarié ajouté avec succés mais aucun mail configuré pour service comptabilité'
+                          to: [
+                            {
+                              email: savedEntreprise.emailComptabilite,
+                              name: 'Service Comptabilité',
+                            },
+                          ],
+                          subject: `Declaration d'entrée`,
+                          htmlContent: declaration_entree(savedUser),
+                        },
+                        config
                       )
-                })
+                      .then((response) => {
+                        res.send(savedEntreprise)
+                      })
+                  : res.send(
+                      'salarié ajouté avec succés mais aucun mail configuré pour service comptabilité'
+                    )
               })
-              .catch((error) => {
-                console.log(Object.keys(error.keyPattern))
-                res.send({
-                  error: error.code,
-                  field: Object.keys(error.keyPattern),
-                })
+            })
+            .catch((error) => {
+              res.send({
+                error: error.message,
               })
-          })
-      } else res.status(404).send(`you must send employee informations`)
+            })
+        })
+    } else res.status(404).send(`entreprise undefined`)
   } catch (error) {
     res.send({ error: error.message })
   }

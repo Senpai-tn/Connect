@@ -2,20 +2,26 @@ const Variable = require('../localModels/variable')
 const node_xlsx = require('node-xlsx')
 const router = require('express').Router()
 const fs = require('fs')
-const xlsx = require('xlsx')
-var jwt = require('jsonwebtoken')
+
 const { checkRole } = require('../../tokenMiddleware')
 const { calcBusinessDays } = require('../../utils/nbJoursOuvrable')
 const dayjs = require('dayjs')
 const Entreprise = require('../../entreprise-service/localModels/entreprise')
+const User = require('../../users-service/models/user')
+
 router.post('/search', async (req, res) => {
   /*
    * #swagger.tags = ['Get All']
    */
-  const { filter } = req.body
+  const { idSalarie, date } = req.body
 
-  console.log(filter)
-  const variables = await Variable.find(filter)
+  const variables = await Variable.find({
+    idSalarie,
+    $or: [
+      { 'value.du': { $regex: `^${date}`, $options: 'i' } },
+      { type: 'value' },
+    ],
+  })
   res.send(variables)
 })
 
@@ -24,7 +30,7 @@ router.post('/search', async (req, res) => {
 //   { du: '05-07-2023', au: '08-07-2023' },
 //   { du: '10-07-2023', au: '17-07-2023' },
 // ]
-// const workSheetsFromFile = node_xlsx.parse(`public/VARIABLES_DE_PAIE.xlsx`)
+// const workSheetsFromFile = node_xlsx.parse(`public/excel/modele_variables_paie/VARIABLES_DE_PAIE.xlsx`)
 // workSheetsFromFile[0].data[0][2] = 'Connect'
 // workSheetsFromFile[0].data[1][7] = 'Juillet'
 // workSheetsFromFile[0].data[3][2] = 'Khaled Sahli'
@@ -133,5 +139,77 @@ router.post('/restore', async (req, res) => {
     return result
   })
   res.send(variables)
+})
+
+router.post('/export_excel', async (req, res) => {
+  try {
+    const { idSalarie, mois, variables } = req.body
+
+    const salarie = await User.findById(idSalarie)
+    const entreprise = (await Entreprise.findById(salarie.idEntreprise)) || null
+    const workSheetsFromFile = node_xlsx.parse(
+      `public/excel/modele_variables_paie/VARIABLES_DE_PAIE.xlsx`
+    )
+    if (salarie === null) {
+      res.status(404).send('user not found')
+    } else if (entreprise === null) {
+      res.status(403).send(`salarié n'est pas affecté au aucune entreprise`)
+    } else {
+      workSheetsFromFile[0].data[0][2] = entreprise.name
+      workSheetsFromFile[0].data[1][7] = dayjs(mois).format('MM-YYYY')
+      workSheetsFromFile[0].data[3][2] = `${salarie.firstName} ${salarie.lastName}`
+      workSheetsFromFile[0].data[4] = [
+        null,
+        'Montant du salaire (préciser si brut ou net)',
+        '1500',
+        'Net',
+      ]
+      workSheetsFromFile[0].data[5] = [
+        null,
+        `Total des heures travaillés dans le mois (heures normales, sup, de nuits…)
+        pour les CDI il faut indiquer la mensualisation indiquée dans le contrat de travail à savoir 151,67 heures pour un 35 heures semaine`,
+        '',
+        '',
+      ]
+      workSheetsFromFile[0].data[6] = [null, `Heures Complémentaires *`, '', '']
+      workSheetsFromFile[0].data[7] = [null, `Heures de Nuit (22h-6h)`, '', '']
+      workSheetsFromFile[0].data[8] = [
+        null,
+        `*HS 25% 36ème à 43 ème heure`,
+        '',
+        '',
+      ]
+      workSheetsFromFile[0].data[9] = [
+        null,
+        `HS 50% à partir de la 44ème heure`,
+        '',
+        '',
+      ]
+      workSheetsFromFile[0].data[10] = [
+        null,
+        `Heures de jour férié (préciser si c'est de nuit)`,
+        '',
+        '',
+      ]
+      workSheetsFromFile[0].data[11] = [
+        null,
+        `Heures de dimanche (préciser si c'est de nuit)`,
+        '',
+        '',
+      ]
+      const nameFile = new Date().valueOf() + '.xlsx'
+      var buffer = node_xlsx.build([
+        { name: 'mySheetName', data: workSheetsFromFile[0].data },
+      ])
+
+      fs.writeFileSync('public/excel/' + nameFile, buffer, {
+        flag: 'wx',
+      })
+      const file = 'public/excel/' + nameFile
+      res.download(file)
+    }
+  } catch (error) {
+    res.status(500).send('errrrr')
+  }
 })
 module.exports = router

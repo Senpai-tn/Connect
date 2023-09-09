@@ -147,6 +147,8 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
       socketID,
       pays,
       listContributeurs,
+      salaire,
+      idEntreprise,
     } = req.body
 
     const user = await User.findById(req.params.id)
@@ -168,6 +170,8 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
         socketID: socketID ? socketID : user.socketID,
         adresse: adresse ? adresse : user.adresse,
         civilité: civility ? civility : user.civilité,
+        salaire: salaire ? salaire : user.salaire,
+        idEntreprise: idEntreprise ? idEntreprise : user.idEntreprise,
         listEntreprise: listEntreprise ? listEntreprise : user.listEntreprise,
         listContributeurs: listContributeurs
           ? listContributeurs
