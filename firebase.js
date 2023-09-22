@@ -4,6 +4,17 @@ const { getFirestore } = require('firebase/firestore')
 const { getStorage } = require('firebase/storage')
 
 const firebaseConfig = {
+    apiKey: "AIzaSyDGrAVAQsVJV1hMJj9Uzbvwl1tG73au25U",
+
+    authDomain: "ekri-53931.firebaseapp.com",
+  
+    projectId: "ekri-53931",
+  
+    storageBucket: "ekri-53931.appspot.com",
+  
+    messagingSenderId: "1039185785220",
+  
+    appId: "1:1039185785220:web:32f466997533031cf72dd1"
   
 }
 
