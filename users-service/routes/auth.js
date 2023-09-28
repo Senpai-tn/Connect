@@ -1,55 +1,59 @@
-const axios = require('axios')
-const express = require('express')
-const upload = require('../../uploadMiddleware')
-const bcrypt = require('bcryptjs')
-var jwt = require('jsonwebtoken')
-const node_xlsx = require('node-xlsx')
-const saltRounds = 10
+const axios = require("axios");
+const express = require("express");
+const upload = require("../../uploadMiddleware");
+const bcrypt = require("bcryptjs");
+var jwt = require("jsonwebtoken");
+const node_xlsx = require("node-xlsx");
+const saltRounds = 10;
 
-const User = require('../models/user')
+const User = require("../models/user");
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/login', (req, res) => {
+router.post("/login", (req, res) => {
   /*
    * #swagger.tags = ["Login"]
    */
   try {
-    const { email, password } = req.body
+    const { email, password } = req.body;
     axios
-      .post('http://localhost:5000/api/auth/login', { email, password })
+      .post("http://localhost:5000/api/auth/login", { email, password })
       .then(async (response) => {
         if (response.data.customData) {
           if (
             response.data.customData.message !==
-            'FirebaseError: Firebase: Error (auth/wrong-password).'
+            "FirebaseError: Firebase: Error (auth/wrong-password)."
           ) {
             if (
               response.data.customData.message ===
-              'FirebaseError: Firebase: Error (auth/user-not-found).'
+              "FirebaseError: Firebase: Error (auth/user-not-found)."
             ) {
-              res.status(404).send('not found')
+              res.status(404).send("not found");
             }
-          } else res.status(403).send('password error')
+          } else res.status(403).send("password error");
         } else {
-          const user = await User.findOne({ uid: response.data.user.uid })
+          const user = await User.findOne({ uid: response.data.user.uid });
           if (!user.deletedAt) {
             if (!user.blockedAt) {
-              var token = jwt.sign({ user: user._doc }, process.env.JWT_KEY, {})
-              res.send({ user: user._doc, token })
-            } else res.status(401).send('user blocked')
-          } else res.status(402).send('user deleted')
+              var token = jwt.sign(
+                { user: user._doc },
+                process.env.JWT_KEY,
+                {}
+              );
+              res.send({ user: user._doc, token });
+            } else res.status(401).send("user blocked");
+          } else res.status(402).send("user deleted");
         }
       })
       .catch((error) => {
-        res.send({ message: error.message })
-      })
+        res.send({ message: error.message });
+      });
   } catch (error) {
-    res.status(500).send({ message: error.message })
+    res.status(500).send({ message: error.message });
   }
-})
+});
 
-router.post('/register', upload.single('photo'), (req, res) => {
+router.post("/register", upload.single("photo"), (req, res) => {
   /*
    * #swagger.tags = ["Register"]
    */
@@ -70,19 +74,19 @@ router.post('/register', upload.single('photo'), (req, res) => {
       civilité,
       listContributeurs,
       pays,
-    } = req.body
+    } = req.body;
     axios
-      .post('http://localhost:5000/api/auth/register', { email, password })
+      .post("http://localhost:5000/api/auth/register", { email, password })
       .then(async (response) => {
         if (response.data.customData) {
           if (
             response.data.customData.message ===
-            'FirebaseError: Firebase: Error (auth/email-already-in-use).'
+            "FirebaseError: Firebase: Error (auth/email-already-in-use)."
           ) {
-            res.status(402).send('email already used')
+            res.status(402).send("email already used");
           }
         } else {
-          const hashedPassword = bcrypt.hashSync(password, saltRounds)
+          const hashedPassword = bcrypt.hashSync(password, saltRounds);
           const user = new User({
             uid: response.data.uid,
             email,
@@ -97,34 +101,34 @@ router.post('/register', upload.single('photo'), (req, res) => {
             civilité,
             listContributeurs,
             pays,
-          })
+          });
           user
             .save()
             .then((response) => {
-              res.send(response)
+              res.send(response);
             })
             .catch((error) => {
-              res.send({ message: error.message })
-            })
+              res.send({ message: error.message });
+            });
         }
       })
       .catch((error) => {
-        res.send({ ...error })
-      })
+        res.send({ ...error });
+      });
   } catch (error) {
-    res.status(500).send({ ...error })
+    res.status(500).send({ ...error });
   }
-})
+});
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   /*
    * #swagger.tags = ["Find by id"]
    */
-  const user = await User.findById(req.query.id)
-  res.send(user)
-})
+  const user = await User.findById(req.query.id);
+  res.send(user);
+});
 
-router.put('/:id', upload.single('photo'), async (req, res) => {
+router.put("/:id", upload.single("photo"), async (req, res) => {
   /*
    * #swagger.tags = ["Edit Profile"]
    */
@@ -149,9 +153,9 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
       listContributeurs,
       salaire,
       idEntreprise,
-    } = req.body
+    } = req.body;
 
-    const user = await User.findById(req.params.id)
+    const user = await User.findById(req.params.id);
     if (user) {
       Object.assign(user, {
         firstName: firstName ? firstName : user.firstName,
@@ -176,66 +180,70 @@ router.put('/:id', upload.single('photo'), async (req, res) => {
         listContributeurs: listContributeurs
           ? listContributeurs
           : user.listContributeurs,
-      })
+      });
       user.save().then((saved) => {
-        res.send(saved)
-      })
+        res.send(saved);
+      });
     } else {
-      res.status(404).send('user_not_found')
+      res.status(404).send("user_not_found");
     }
   } catch (error) {}
-})
-
-router.post('/search', async (req, res) => {
+});
+//
+//   filter:{
+//     uid:uid
+//   }
+//
+router.post("/search", async (req, res) => {
   /*
    * #swagger.tags = ["Search"]
    */
   try {
-    const { filter } = req.body
-    const users = await User.find(filter)
-    res.send(users)
+    const { filter } = req.body;
+    const users = await User.find(filter);
+    res.send(users);
   } catch (error) {
-    res.status(500).send({ ...error, message: error.message })
+    res.status(500).send({ ...error, message: error.message });
   }
-})
+});
 
-router.post('/restore', async (req, res) => {
+router.post("/restore", async (req, res) => {
   /*
    * #swagger.tags = ["Restore"]
    */
-  const { idList } = req.body
-  const users = await User.find(idList && { _id: idList })
+  const { idList } = req.body;
+  const users = await User.find(idList && { _id: idList });
   users.map(async (u) => {
-    u.deletedAt = null
-    u.blockedAt = null
-    result = await u.save()
-    return result
-  })
-  res.send(users)
-})
+    u.deletedAt = null;
+    u.blockedAt = null;
+    result = await u.save();
+    return result;
+  });
+  res.send(users);
+});
 
-router.post('/add_user', upload.single('photo'), async (req, res) => {
+router.post("/add_user", upload.single("photo"), async (req, res) => {
   /*
    * #swagger.tags = ["Add user"]
    */
   {
     const { firstName, lastName, dateNaissance, civilité, email, role, pays } =
-      req.body
+      req.body;
     axios
-      .post('http://localhost:5000/api/auth/register', {
+      .post("http://localhost:5000/api/auth/register", {
         email,
-        password: 'password',
+        password: "password",
       })
       .then(async (response) => {
         if (response.data.customData) {
           if (
             response.data.customData.message ===
-            'FirebaseError: Firebase: Error (auth/email-already-in-use).'
+            "FirebaseError: Firebase: Error (auth/email-already-in-use)."
           ) {
-            res.status(402).send('email already used')
+            res.status(402).send("email already used");
           }
         } else {
-          const hashedPassword = bcrypt.hashSync('password', saltRounds)
+          const hashedPassword = bcrypt.hashSync("password", saltRounds);
           const user = new User({
             uid: response.data.uid,
             email,
@@ -247,42 +255,42 @@ router.post('/add_user', upload.single('photo'), async (req, res) => {
             photo: req.file ? req.file.filename : null,
             role,
             pays,
-          })
+          });
           user
             .save()
             .then((response) => {
-              res.send(response)
+              res.send(response);
             })
             .catch((error) => {
-              res.send({ message: error.message })
-            })
+              res.send({ message: error.message });
+            });
         }
-      })
+      });
   }
-})
+});
 
 router.post(
-  '/import_excel',
-  upload.single('list_salarie'),
+  "/import_excel",
+  upload.single("list_salarie"),
   async (req, res) => {
     /*
      * #swagger.tags = ["Import from Excel file"]
      */
 
     try {
-      const { role } = req.body
-      const { path = 'imports_salaries' } = req.query
+      const { role } = req.body;
+      const { path = "imports_salaries" } = req.query;
       const workSheetsFromFile = req.file
         ? node_xlsx.parse(`public/${path}/${req.file.filename}`, {
-            type: 'binary',
+            type: "binary",
             cellDates: true,
             cellNF: false,
             cellText: false,
           })
-        : []
+        : [];
 
-      const succeed = []
-      const failed = []
+      const succeed = [];
+      const failed = [];
       {
         await Promise.all(
           workSheetsFromFile.map(async (feuille) => {
@@ -302,27 +310,27 @@ router.post(
                       dateNaissance: new Date(row[3]),
                       tel: row[4],
                       role: role,
-                    })
+                    });
                     await u
                       .save()
                       .then((savedUser) => {
-                        succeed.push(savedUser)
+                        succeed.push(savedUser);
                       })
                       .catch(async (error) => {
-                        failed.push(u)
-                      })
-                  })
+                        failed.push(u);
+                      });
+                  });
               })
-            )
+            );
           })
-        )
+        );
       }
 
-      res.send({ succeed, failed })
+      res.send({ succeed, failed });
     } catch (error) {
-      res.status(500).send({ error: error.message })
+      res.status(500).send({ error: error.message });
     }
   }
-)
+);
 
-module.exports = router
+module.exports = router;
