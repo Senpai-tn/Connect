@@ -40,7 +40,7 @@ router.post("/login", (req, res) => {
                 process.env.JWT_KEY,
                 {}
               );
-              res.send({ user: user._doc, token });
+              res.send({ ...user._doc, token });
             } else res.status(401).send("user blocked");
           } else res.status(402).send("user deleted");
         }
@@ -111,7 +111,7 @@ router.post("/register", upload.single("photo"), (req, res) => {
                 process.env.JWT_KEY,
                 {}
               );
-              res.send({ user: savedUser, token });
+              res.send({ ...savedUser, token });
             })
             .catch((error) => {
               res.send({ message: error.message });
