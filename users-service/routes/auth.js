@@ -107,11 +107,11 @@ router.post("/register", upload.single("photo"), (req, res) => {
             .save()
             .then((savedUser) => {
               var token = jwt.sign(
-                { user: savedUser },
+                { user: savedUser._doc },
                 process.env.JWT_KEY,
                 {}
               );
-              res.send({ ...savedUser, token });
+              res.send({ ...savedUser._doc, token });
             })
             .catch((error) => {
               res.send({ message: error.message });
