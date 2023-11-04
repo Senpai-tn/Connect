@@ -67,7 +67,6 @@ router.post("/register", upload.single("photo"), (req, res) => {
       lastName,
       adresse,
       role,
-      photo,
       dateNaissance,
       cp,
       ville,
@@ -94,6 +93,8 @@ router.post("/register", upload.single("photo"), (req, res) => {
             tel,
             adresse,
             role,
+            firstName,
+            lastName,
             photo: req.file ? req.file.filename : null,
             dateNaissance,
             cp,
@@ -104,8 +105,13 @@ router.post("/register", upload.single("photo"), (req, res) => {
           });
           user
             .save()
-            .then((response) => {
-              res.send(response);
+            .then((savedUser) => {
+              var token = jwt.sign(
+                { user: savedUser },
+                process.env.JWT_KEY,
+                {}
+              );
+              res.send({ user: savedUser, token });
             })
             .catch((error) => {
               res.send({ message: error.message });
