@@ -207,7 +207,7 @@ router.post("/search", async (req, res) => {
   try {
     const { filter } = req.body;
     const users = await User.find(filter);
-    res.send(users);
+    res.send({ users });
   } catch (error) {
     res.status(500).send({ ...error, message: error.message });
   }
@@ -225,7 +225,7 @@ router.post("/restore", async (req, res) => {
     result = await u.save();
     return result;
   });
-  res.send(users);
+  res.send({ users });
 });
 
 router.post("/add_user", upload.single("photo"), async (req, res) => {
