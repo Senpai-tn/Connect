@@ -73,54 +73,89 @@ router.post("/register", upload.single("photo"), (req, res) => {
       civilité,
       listContributeurs,
       pays,
+      provider,
     } = req.body;
-    axios
-      .post("http://localhost:5000/api/auth/register", { email, password })
-      .then(async (response) => {
-        if (response.data.customData) {
-          if (
-            response.data.customData.message ===
-            "FirebaseError: Firebase: Error (auth/email-already-in-use)."
-          ) {
-            res.status(402).send("email already used");
-          }
-        } else {
-          const hashedPassword = bcrypt.hashSync(password, saltRounds);
-          const user = new User({
-            uid: response.data.uid,
-            email,
-            password: hashedPassword,
-            tel,
-            adresse,
-            role,
-            firstName,
-            lastName,
-            photo: req.file ? req.file.filename : null,
-            dateNaissance,
-            cp,
-            ville,
-            civilité,
-            listContributeurs,
-            pays,
-          });
-          user
-            .save()
-            .then((savedUser) => {
-              var token = jwt.sign(
-                { user: savedUser._doc },
-                process.env.JWT_KEY,
-                {}
-              );
-              res.send({ ...savedUser._doc, token });
-            })
-            .catch((error) => {
-              res.send({ message: error.message });
+    if (provider === null) {
+      axios
+        .post("http://localhost:5000/api/auth/register", { email, password })
+        .then(async (response) => {
+          if (response.data.customData) {
+            if (
+              response.data.customData.message ===
+              "FirebaseError: Firebase: Error (auth/email-already-in-use)."
+            ) {
+              res.status(402).send("email already used");
+            }
+          } else {
+            const hashedPassword = bcrypt.hashSync(password, saltRounds);
+            const user = new User({
+              uid: response.data.uid,
+              email,
+              password: hashedPassword,
+              tel,
+              adresse,
+              role,
+              firstName,
+              lastName,
+              photo: req.file ? req.file.filename : null,
+              dateNaissance,
+              cp,
+              ville,
+              civilité,
+              listContributeurs,
+              pays,
             });
-        }
-      })
-      .catch((error) => {
-        res.send({ ...error });
+            user
+              .save()
+              .then((savedUser) => {
+                var token = jwt.sign(
+                  { user: savedUser._doc },
+                  process.env.JWT_KEY,
+                  {}
+                );
+                res.send({ ...savedUser._doc, token });
+              })
+              .catch((error) => {
+                res.send({ message: error.message });
+              });
+          }
+        })
+        .catch((error) => {
+          res.send({ ...error });
+        });
+    } else {
+      const hashedPassword = bcrypt.hashSync(password, saltRounds);
+      const user = new User({
+        uid: response.data.uid,
+        email,
+        password: hashedPassword,
+        tel,
+        adresse,
+        role,
+        firstName,
+        lastName,
+        photo: req.file ? req.file.filename : null,
+        dateNaissance,
+        cp,
+        ville,
+        civilité,
+        listContributeurs,
+        pays,
       });
+      user
+        .save()
+        .then((savedUser) => {
+          var token = jwt.sign(
+            { user: savedUser._doc },
+            process.env.JWT_KEY,
+            {}
+          );
+          res.send({ ...savedUser._doc, token });
+        })
+        .catch((error) => {
+          res.send({ message: error.message });
+        });
+    }
   } catch (error) {
     res.status(500).send({ ...error });
   }
